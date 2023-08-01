@@ -126,6 +126,7 @@ spec:
     - mountPath: /tools
       name: tools
   restartPolicy: Never
+  securityContext: {}
   serviceAccountName: default-SA
   terminationGracePeriodSeconds: 12
   volumes:
