@@ -63,9 +63,12 @@ trap signal_handler INT TERM
 # build kubernetes / node image, kubectl binary
 build() {
   # build the node image w/ kubernetes
-  wget https://dl.k8s.io/ci/$revision/kubernetes-server-linux-amd64.tar.gz
-  tar -xf kubernetes-server-linux-amd64.tar.gz
+  wget https://dl.k8s.io/ci/$revision/kubernetes-server-linux-amd64.tar.gz && tar -xf kubernetes-server-linux-amd64.tar.gz
   kind build node-image -v 1 --type file kubernetes-server-linux-amd64.tar.gz
+  rm -f rm -f kubernetes-server-linux-amd64.tar.gz
+  #TODO bin只留下kubelet?
+  #TODO 需要考虑arm64以及其他架构吗?
+
   # make sure we have kubectl
   # make all WHAT="cmd/kubectl"
 
