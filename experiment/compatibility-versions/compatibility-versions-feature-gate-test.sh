@@ -224,9 +224,9 @@ main() {
 
   export revision=$(curl --fail --silent -L https://dl.k8s.io/ci/latest-${EMULATED_VERSION}.txt)
   hash=${revision/*+/}
-  mkdir -p release-${EMULATED_VERSION}/test/featuregates_linter
-  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/versioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/versioned_feature_list.yaml
-  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/unversioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/unversioned_feature_list.yaml
+  mkdir -p release-${EMULATED_VERSION}/test/featuregates_linter/test_data
+  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/versioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/test_data/versioned_feature_list.yaml
+  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/unversioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/test_data/unversioned_feature_list.yaml
 
   # Create and validate previous cluster
   # git clone --filter=blob:none --single-branch --branch "release-${EMULATED_VERSION}" https://github.com/kubernetes/kubernetes.git "release-${EMULATED_VERSION}"
