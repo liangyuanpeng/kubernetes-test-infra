@@ -63,12 +63,15 @@ trap signal_handler INT TERM
 # build kubernetes / node image, kubectl binary
 build() {
   # build the node image w/ kubernetes
-  kind build node-image -v 1
+  wget https://dl.k8s.io/ci/$revision/kubernetes-server-linux-amd64.tar.gz
+  tar -xf kubernetes-server-linux-amd64.tar.gz
+  kind build node-image -v 1 --type file kubernetes-server-linux-amd64.tar.gz
   # make sure we have kubectl
-  make all WHAT="cmd/kubectl"
+  # make all WHAT="cmd/kubectl"
 
   # Ensure the built kubectl is used instead of system
-  export PATH="${PWD}/_output/bin:$PATH"
+  # export PATH="${PWD}/_output/bin:$PATH"
+  export PATH="${PWD}/kubernetes/server/bin:$PATH"
 }
 
 check_structured_log_support() {
@@ -219,9 +222,15 @@ main() {
   export PREV_VERSIONED_FEATURE_LIST=${PREV_VERSIONED_FEATURE_LIST:-"release-${EMULATED_VERSION}/test/featuregates_linter/test_data/versioned_feature_list.yaml"}
   export UNVERSIONED_FEATURE_LIST=${UNVERSIONED_FEATURE_LIST:-"release-${EMULATED_VERSION}/test/featuregates_linter/test_data/unversioned_feature_list.yaml"}
 
-  # Create and validate previous cluster
-  git clone --filter=blob:none --single-branch --branch "release-${EMULATED_VERSION}" https://github.com/kubernetes/kubernetes.git "release-${EMULATED_VERSION}"
+  export revision=$(curl --fail --silent -L https://dl.k8s.io/ci/latest-${EMULATED_VERSION}.txt)
+  hash=${revision/*+/}
+  mkdir -p release-${EMULATED_VERSION}/test/featuregates_linter
+  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/versioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/versioned_feature_list.yaml
+  wget https://raw.githubusercontent.com/kubernetes/kubernetes/$hash/test/featuregates_linter/test_data/unversioned_feature_list.yaml -O release-${EMULATED_VERSION}/test/featuregates_linter/unversioned_feature_list.yaml
 
+  # Create and validate previous cluster
+  # git clone --filter=blob:none --single-branch --branch "release-${EMULATED_VERSION}" https://github.com/kubernetes/kubernetes.git "release-${EMULATED_VERSION}"
+  
   # Build current version
   build
 
