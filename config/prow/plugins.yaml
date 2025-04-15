@@ -330,6 +330,15 @@ blockades:
   explanation: "Changes to push-build.sh will immediately affect the Kubernetes CI. This PR must be explicitly approved by SIG Release repo admins."
 - repos:
   - kubernetes/client-go
+  - kubernetes/code-generator
+  - kubernetes/metrics
+  - kubernetes/apiextensions-apiserver
+  - kubernetes/sample-controller
+  - kubernetes/sample-apiserver
+  - kubernetes/kube-aggregator
+  - kubernetes/apiserver
+  - kubernetes/api
+  - kubernetes/apimachinery
   blockregexps:
   - .*
   explanation: "We do not accept changes directly against this repository. Please see `CONTRIBUTING.md` for information on where and how to contribute instead."
